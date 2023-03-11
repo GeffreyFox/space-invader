@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -57,6 +58,7 @@ public class Player : MonoBehaviour
     private static readonly int Death = Animator.StringToHash("Death");
     private static readonly int Hit = Animator.StringToHash("Hit");
     private static readonly int Restart1 = Animator.StringToHash("Restart");
+    private static readonly int Shoot1 = Animator.StringToHash("Shoot");
 
     #endregion
 
@@ -114,6 +116,8 @@ public class Player : MonoBehaviour
         audioSource.clip = deathSound;
         audioSource.Play();
         
+        GetComponentInChildren<ParticleSystem>().Play();
+        
         Destroy(bullet.gameObject);
         if (lives == 0) PlayerDeath();
         else PlayerGotHit();
@@ -150,6 +154,14 @@ public class Player : MonoBehaviour
 
         rigidbody.velocity = Vector2.zero;
         playerAnimator.SetTrigger(Death);
+        StartCoroutine(LoadCredits());
+    }
+
+    IEnumerator LoadCredits()
+    {
+        yield return new WaitForSeconds(1.2f);
+
+        SceneManager.LoadScene("Credits");
     }
 
     public static void OnLose()
@@ -178,11 +190,20 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Actions
+
+    private IEnumerator PlayShootAnimation()
+    {
+        playerAnimator.SetBool(Shoot1, true);
+        yield return new WaitForSeconds(0.3f);
+        playerAnimator.SetBool(Shoot1, false);
+    }
     
     private void Shoot()
     {
         audioSource.clip = shootSound;
         audioSource.Play();
+
+        StartCoroutine(PlayShootAnimation());
 
         bullet = Instantiate(bulletPrefab, shootOffsetTransform.position, Quaternion.identity);
         Destroy(bullet, 1.7f);

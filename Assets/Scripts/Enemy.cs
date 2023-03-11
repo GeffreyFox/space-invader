@@ -25,7 +25,10 @@ public class Enemy : MonoBehaviour
 
     private GameObject currentBullet;
     private AudioSource audioSource;
-    
+
+    [SerializeField] private AudioClip enemyDeathSound;
+    [SerializeField] private AudioClip enemyShootSound;
+
     private Animator animator;
     private ExtraEnemy extraEnemy;
     
@@ -70,6 +73,9 @@ public class Enemy : MonoBehaviour
     {
         if (currentBullet) return;
         
+        audioSource.clip = enemyShootSound;
+        audioSource.Play();
+        
         currentBullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         OnEnemyShoot?.Invoke(currentBullet);
         Destroy(currentBullet, 3f);
@@ -80,11 +86,13 @@ public class Enemy : MonoBehaviour
         if (bullet.CompareTag("Player")) return;
         
         animator.SetTrigger(Death);
+        GetComponentInChildren<ParticleSystem>().Play();
         Destroy(bullet.gameObject);
 
         Spawner.EnemiesRemaining--;
         if (Spawner.EnemiesRemaining == 0) OnWin?.Invoke();
 
+        audioSource.clip = enemyDeathSound;
         audioSource.Play();
         
         Random random = new Random();

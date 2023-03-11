@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameHandler : MonoBehaviour
@@ -10,7 +11,12 @@ public class GameHandler : MonoBehaviour
     #endregion
     
     public static bool hasLoose = false;
-    
+
+    private void Start()
+    {
+        hasLoose = false;
+    }
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))

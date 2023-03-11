@@ -32,9 +32,9 @@ public class Score : MonoBehaviour
     
     [SerializeField] private GameObject lifeHolder;
     [SerializeField] private GameObject life;
-    [SerializeField] private GameObject gameOverPrefab;
-    [SerializeField] private GameObject startPrefab;
-    [SerializeField] private GameObject enemiesPrefab;
+    //[SerializeField] private GameObject gameOverPrefab;
+    //[SerializeField] private GameObject startPrefab;
+    //[SerializeField] private GameObject enemiesPrefab;
 
     [SerializeField] private Highscore highscore;
 
@@ -44,22 +44,23 @@ public class Score : MonoBehaviour
 
     #region Init
 
-    private void Awake()
+    private void Start()
     {
-        GameHandler.hasLoose = true;
-        enemiesPrefab.SetActive(false);
+        //GameHandler.hasLoose = true;
+        //enemiesPrefab.SetActive(false);
         highscoreText.text = highscore.text;
     }
 
-    private void Update()
+    /*private void Update()
     {
-        if (startPrefab.activeSelf && Input.GetKeyDown(KeyCode.R))
+        //if (startPrefab.activeSelf && Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            startPrefab.SetActive(false);
+            //startPrefab.SetActive(false);
             enemiesPrefab.SetActive(true);
             GameHandler.hasLoose = false;
         }
-    }
+    }*/
 
     #endregion
     
@@ -122,13 +123,13 @@ public class Score : MonoBehaviour
         scoreText.text = "";
         highscoreText.text = "";
         
-        gameOverPrefab.SetActive(true);
+        //gameOverPrefab.SetActive(true);
     }
 
     private void Restart()
     {
         score = 0;
-        gameOverPrefab.SetActive(false);
+        //gameOverPrefab.SetActive(false);
         scoreText.text = "SCORE : 0000";
         highscoreText.text = highscore.text;
     }
